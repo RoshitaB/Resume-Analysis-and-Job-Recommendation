@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="{% static 'css/custom_AI.css' %} " rel="stylesheet">
+    <link href="{% static 'js/js.js' %} " rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      #section1 {
+        height: 600px;
+        background: linear-gradient(to right, #131456, #192d75,#131456);
+      }
+      
+      #section2 {
+        background-color: #0959aede;
+      }
+      #section3 {
+        background-color: #00014b;
+      }
+      .filterDiv {
+  float: left;
+  background-color: #2196F3;
+  color: #ffffff;
+  width: 100px;
+  line-height: 100px;
+  text-align: center;
+  margin: 2px;
+  display: none;
+}
+      </style>
+</head>
+<body >
+    <nav class="navbar navbar-expand-lg navbar-dark justify-content-between"style="background-color: #000063;">
+        <a class="navbar-brand" href="#" style="font-weight: bold;">Job Recommender </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" >Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mr-sm-2" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+<div class="main" id="section1">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+
+            <div class="frame">
+                <div class="center">
+                  <div class="title">
+                    <h4 style="color: white;">
+                        <br>
+                      Upload
+                    </h4>
+                  </div>
+
+                  <form method="post" enctype="multipart/form-data" action="predictImage">
+                    
+                  <div class="file">
+                    {% csrf_token %}
+                    <img src="{% static 'css/output-onlinepngtools.png' %}" class="upload">
+                    <span class="fileName"></span>
+                    <input name="filePath" type="file" class="input" />
+                  </div>
+                  <input type="submit" class="btn" value="Submit">
+                </div>
+              </form>
+
+              </div>
+          </div>
+          
+          <div class="col-sm">
+            <img src="{% static 'css/scroll.gif' %}" alt="Computer man" class="scroll">
+            <img src="{% static 'css/image-removebg-preview (5).png' %}" class="upload_2">
+          </div>
+        </div>
+      </div>
+</div>
+<!-- section 1 ends -->
+
+
+
+
+<div class="main" id="section3">
+      <center >
+        <div style="padding-top: 4%;"><h1 style="color: white;font-weight: bold;">What we offer?</h1></div>
+      </center>
+      <br>
+
+      <!-- 2 round images  -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <center>
+              <img src="{% static 'css/res.png'%}" alt="img" style="width: 35%;">
+            <!-- <h4>Analyse Resume</h4> -->
+            </center>
+          </div>
+          <div class="col-sm">
+            <center>
+              <img src="{% static 'css/jbs.png'%}" alt="img" style="width: 40%;">
+            <!-- <h4>Recommend Jobs</h4> -->
+            </center>
+          </div>
+        </div>
+      </div>
+
+<!-- labeling  -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <center>
+              <!-- <img src="{% static 'css/res.png'%}" alt="img" style="width: 35%;"> -->
+            <h4 style="color: aliceblue;font-weight: bold;">Analyse Resume</h4>
+            </center>
+          </div>
+          <div class="col-sm">
+            <center>
+              <!-- <img src="{% static 'css/jbs.png'%}" alt="img" style="width: 40%;"> -->
+            <h4 style="color: aliceblue;font-weight: bold;">Recommend Jobs</h4>
+            </center>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+
+<div class="main" id="section2">
+      <!-- {% for i,row in top15.iterrows %}
+<h2 style="color: rgb(223, 221, 217);">Job Title {{row.Title }}</h2>
+    {% endfor %} -->
+
+    <center>
+      <form action="/filter" method="get">
+        <label for="cars">Filter by Profession:</label>
+        <select id="input" name="input">
+          {% for class in unique %}
+          <option value="{{class}}" >{{class}}</option>
+          {% endfor %}
+          <input type="submit" style="width: 10%; height: 10%; margin-left: 10px; margin-top: 5px;">
+        </select>
+        
+      </form>
+    </center>
+
+    <div>
+         
+      <div class="grid">
+        
+        {% for i,row in top15.iterrows %}
+      
+        <div class="card">
+          <img src="{% static 'css/job2.jpg'%}" alt="Avatar" style="width:100%">
+          <div class="container">
+            
+
+            <!-- <div class="modal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <b>Job Title </b>
+            <p>{{row.Title }}</p>
+            <b>Company </b>
+            <p>{{row.Company }}</p>
+            <!-- <b>Location </b>
+            <p>{{row.Location }}</p> -->
+            <!-- <b>{{i}}</b> -->
+            <!-- model -->
+            <div class="w3-container">
+              <!-- <h2>W3.CSS Modal</h2> -->
+              <button onclick="document.getElementById('{{i}}').style.display='block'" class="w3-button w3-black">View Details</button>
+            
+              <div id="{{i}}" class="w3-modal">
+                <div class="w3-modal-content">
+                  <div class="w3-container">
+                    <span onclick="document.getElementById('{{i}}').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+          <center><img src="{% static 'css/jbs.png'%}" alt="Avatar" style="width:50%"></center>
+                    <b>Job Title </b>
+                    <p>{{row.Title }}</p>
+                    <b>Company </b>
+                    <p>{{row.Company }}</p>
+                    <b>Location </b>
+                  <p>{{row.Location }}</p>
+                  <b>Rating </b>
+                    <p>{{row.Ratings }}</p>
+                    <b>Salary </b>
+                    <p>{{row.Salary }}</p>
+                    <b>Job Post History </b>
+                  <p>{{row.Job_Post_History }}</p>
+                  <b>Link:
+                    <button class="primary"><a href="{{row.URL}}">link</a></button>
+                  </b>
+                  
+               
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end model -->
+          </div>
+        </div>
+        {% endfor %}
+      
+      
+    </div>
+
+    </div>
+</div>
+
+<!-- <footer>
+  <div class="row primary">
+    <div class="column about">
+  
+    <h3>Foolish Developer</h3>
+  
+     <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae,
+        voluptatem corporis error non,
+    </p>
+  
+    <div class="social">
+      <i class="fa-brands fa-facebook-square"></i>
+      <i class="fa-brands fa-instagram-square"></i>
+      <i class="fa-brands fa-twitter-square"></i>
+      <i class="fa-brands fa-youtube-square"></i>
+      <i class="fa-brands fa-whatsapp-square"></i>
+    </div>
+  </div>
+  
+  <div class="column links">
+  <h3>Some Links</h3>
+  
+   <ul>
+  
+    <li>
+     <a href="#faq">F.A.Q</a>
+    </li>
+    <li>
+     <a href="#cookies-policy">Cookies Policy</a>
+    </li>
+    <li>
+     <a href="#terms-of-services">Terms Of Service</a>
+    </li>
+    <li>
+     <a href="#support">Support</a>
+    </li>
+   </ul>
+  
+  </div>
+  
+  
+  <div class="column links">
+    <h3>Some Links</h3>
+     <ul>
+      <li>
+       <a href="#faq">F.A.Q</a>
+      </li>
+      <li>
+       <a href="#cookies-policy">Cookies Policy</a>
+      </li>
+      <li>
+      <a href="#terms-of-services">Terms Of Service</a>
+      </li>
+      <li>
+      <a href="#support">Support</a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="column subscribe">
+   <h3>Newsletter</h3>
+    <div>
+     <input type="email" placeholder="Your email id here" />
+     <button>Subscribe</button>
+    </div>
+  
+  </div>
+  
+  </div>
+  
+  <div class="row copyright">
+    <div class="footer-menu">
+  
+    <a href="">Home</a>
+    <a href="">About</a>
+    <a href="">Contact</a>
+    <a href="">Blog</a>
+    <a href="">Social</a>
+  
+    </div>
+     <p>Copyright &copy; 2021 Foolish Developer</p>
+  </div>
+  </footer> -->
+  <!-- <div class="container my-5"> -->
+    <!-- Footer -->
+    <footer
+            class="text-center text-lg-start text-white"
+            style="background-color: #3e4551"
+            >
+      <!-- Grid container -->
+      <div class="container p-2 pb-0">
+        <!-- Section: Links -->
+        <section class="">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase">JOB RECOMMENDER</h5>
+  
+              <p>
+                Website for finding out the best jobs for you!
+                <br>
+                Customizing jobs according to your Resume.
+                <br>
+                Making the job search simpler for you.
+              </p>
+            </div>
+            <!--Grid column-->
+  
+            
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-lg-8 col-md-6 mb-4 mb-md-0 ">
+              <h5 class="text-uppercase">Contact US</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white">8987678765</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">jb@jobrecommender.com</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">India</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </section>
+        <!-- Section: Links -->
+  
+        <hr class="mb-4" />
+  
+        <!-- Section: CTA -->
+        <section class="">
+          <p class="d-flex justify-content-center align-items-center">
+            <span class="me-3">Register for free</span>
+            
+          </p>
+        </section>
+        <!-- Section: CTA -->
+  
+        <hr class="mb-4" />
+  
+        
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+  
+      <!-- Copyright -->
+      <div
+           class="text-center p-3"
+           style="background-color: rgba(0, 0, 0, 0.2)"
+           >
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/"
+           >MDBootstrap.com</a
+          >
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+  <!-- </div> -->
+<script>
+  const myModal = document.getElementById('myModal')
+const myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', () => {
+  myInput.focus()
+})
+</script>
+
+
+
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>
